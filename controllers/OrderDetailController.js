@@ -1,3 +1,5 @@
+import { Sequelize } from "sequelize"
+import db from '../models'
 export function getOrderDetails(req, res) {
   res.status(200).json({
     message: 'Lấy danh sách chi tiết đơn hàng thành công'

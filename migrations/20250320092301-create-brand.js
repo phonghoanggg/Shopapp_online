@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('banners', {
+    await queryInterface.createTable('brands', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,25 +10,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING,
-        allowNull:false,
-        unique:true
+        type: Sequelize.STRING
       },
       image: {
         type: Sequelize.TEXT
       },
-      status: {
-        type: Sequelize.INTEGER
-      },
       created_at: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       updated_at: {
+        allowNull: false,
         type: Sequelize.DATE
-      },
+      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('banners');
+    await queryInterface.dropTable('brands');
   }
 };

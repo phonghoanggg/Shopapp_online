@@ -27,7 +27,7 @@ Table products {
   description text
   specification text
   buyturn int
-  quanity int
+  quantity int
   brand_id int
   category_id int
   created_at timestamp
@@ -67,7 +67,7 @@ Table order_detail {
   order_id int
   product_id int
   price int
-  quanity int
+  quantity int
   created_at timestamp
   update_at timestamp
 }

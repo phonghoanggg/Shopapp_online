@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class feedBack extends Model {
+  class Feedback extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,22 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      feedBack.belongsTo(models.products,{
-        foreignKey:"product_id"
-      })
-      feedBack.belongsTo(models.users,{
+      Feedback.belongsTo(models.User,{
         foreignKey:"user_id"
+      })
+      Feedback.belongsTo(models.Product,{
+        foreignKey:"product_id"
       })
     }
   }
-  feedBack.init({
+  Feedback.init({
     product_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
     start: DataTypes.INTEGER,
     content: DataTypes.TEXT
   }, {
     sequelize,
-    modelName: 'feedBack',
+    modelName: 'Feedback',
+    tableName:'feedbacks',
+    underscored:true
   });
-  return feedBack;
+  return Feedback;
 };
