@@ -1,0 +1,116 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [primary key]
+  email varcahr
+  password varcahr
+  name varchar
+  role int
+  avatar varchar
+  phone int
+  created_at timestamp
+  update_at timestamp
+}
+
+Table categories {
+  id int [pk]
+  name varchar
+  image text
+}
+Table products {
+  id int [pk]
+  name varchar
+  price int
+  oldprice int
+  image text
+  description text
+  specification text
+  buyturn int
+  quanity int
+  brand_id int
+  category_id int
+  created_at timestamp
+  update_at timestamp
+}
+Ref: categories.id < products.category_id
+Table brands {
+  id int [pk]
+  name varchar
+  image text
+}
+Ref: brands.id < products.brand_id
+Table Feeback {
+  id int [pk]
+  product_id int
+  user_id int
+  start int
+  content text
+  created_at timestamp
+  update_at timestamp
+}
+Ref: products.id < Feeback.product_id
+Ref: users.id < Feeback.user_id
+
+Table orders {
+  id int [pk]
+  user_id int
+  status int
+  note text
+  total int
+  created_at timestamp
+  update_at timestamp
+}
+Ref: "users"."id" < "orders"."user_id"
+Table order_detail {
+  id int [pk]
+  order_id int
+  product_id int
+  price int
+  quanity int
+  created_at timestamp
+  update_at timestamp
+}
+Ref: "orders"."id" < "order_detail"."order_id"
+Table news {
+  id int [pk]
+  title varchar
+  image text
+  content text
+  created_at timestamp
+  update_at timestamp
+}
+Table news_detail {
+  id int [pk]
+  product_id int
+  news_id int
+  created_at timestamp
+  update_at timestamp
+}
+
+
+Ref: "news"."id" < "news_detail"."news_id"
+
+Ref: "products"."id" < "news_detail"."product_id"
+
+Ref: "products"."id" < "order_detail"."product_id"
+Table banner {
+  id int [pk]
+  name varchar
+  image text
+  status int
+  created_at timestamp
+  update_at timestamp
+}
+Table banner_detail {
+  id int [pk]
+  product_id int
+  banner_id int
+  created_at timestamp
+  update_at timestamp
+}
+
+
+Ref: "banner"."id" < "banner_detail"."banner_id"
+
+Ref: "products"."id" < "banner_detail"."product_id"

@@ -1,0 +1,15 @@
+{
+	"id": "71703a1b-ee17-47de-8245-8322d67cd044",
+	"values": [
+		{
+			"key": "API_SHOPAPP",
+			"value": "http://localhost:3000",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2025-03-19T18:30:52.827Z",
+	"_postman_exported_using": "Postman/11.37.0"
+}

@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "47a651df-7ef7-4f12-aea8-2fbabd658fad",
+		"name": "Shopapp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17124768"
+	},
+	"item": [
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/products"
+					}
+				},
+				{
+					"name": "Get ID",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/products/:id"
+					}
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"url": "{{API_SHOPAPP}}/products"
+					}
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{API_SHOPAPP}}/products/:id"
+					}
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"url": "{{API_SHOPAPP}}/products/:id"
+					}
+				}
+			]
+		},
+		{
+			"name": "categories",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/categories"
+					}
+				},
+				{
+					"name": "Get ID",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/categories/:id"
+					}
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"url": "{{API_SHOPAPP}}/categories"
+					}
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{API_SHOPAPP}}/categories/:id"
+					}
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"url": "{{API_SHOPAPP}}/categories/:id"
+					}
+				}
+			]
+		},
+		{
+			"name": "brands",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/brands"
+					}
+				},
+				{
+					"name": "Get ID",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/brands/:id"
+					}
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"url": "{{API_SHOPAPP}}/brands"
+					}
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{API_SHOPAPP}}/brands/:id"
+					}
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"url": "{{API_SHOPAPP}}/brands/:id"
+					}
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/orders"
+					}
+				},
+				{
+					"name": "Get ID",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/orders/:id"
+					}
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"url": "{{API_SHOPAPP}}/orders"
+					}
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{API_SHOPAPP}}/orders/:id"
+					}
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"url": "{{API_SHOPAPP}}/orders/:id"
+					}
+				}
+			]
+		},
+		{
+			"name": "order-details",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/order-details"
+					}
+				},
+				{
+					"name": "Get ID",
+					"request": {
+						"method": "GET",
+						"url": "{{API_SHOPAPP}}/order-details/:id"
+					}
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"url": "{{API_SHOPAPP}}/order-details"
+					}
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{API_SHOPAPP}}/order-details/:id"
+					}
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"url": "{{API_SHOPAPP}}/order-details/:id"
+					}
+				}
+			]
+		}
+	]
+}
