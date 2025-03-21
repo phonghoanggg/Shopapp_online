@@ -4,12 +4,13 @@ import * as CategoryController from './controllers/CategoryController'
 import * as BrandController from './controllers/BrandController'
 import * as OrderController from './controllers/OrderController'
 import * as OrderDetailController from './controllers/OrderDetailController'
+import asyncHandler from './middlewares/asyncHandler'
 const router = express.Router()
 export function AppRoute(app) {
   // products
   router.get('/products', ProductController.getProducts)
   router.get('/products/:id', ProductController.getProductById)
-  router.post('/products', ProductController.insertProduct)
+  router.post('/products', asyncHandler(ProductController.insertProduct))
   router.put('/products/:id', ProductController.updateProduct)
   router.delete('/products/:id', ProductController.deleteProduct)
   // category
