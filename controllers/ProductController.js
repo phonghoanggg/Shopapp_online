@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize"
 import {Op} from "sequelize"
 import db from '../models'
-import InsertProductRequest from "../dtos/requests/product/InsertProductRequest"
 export async function getProducts(req,res) {
   const {search ="", page = 1} = req.query
   console.log(req.query)

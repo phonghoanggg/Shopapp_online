@@ -1,4 +1,5 @@
 import express from 'express'
+import * as UserController from './controllers/UserController'
 import * as ProductController from './controllers/ProductController'
 import * as CategoryController from './controllers/CategoryController'
 import * as BrandController from './controllers/BrandController'
@@ -8,8 +9,15 @@ import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
 import InsertProductRequest from './dtos/requests/product/InsertProductRequest'
 import UpdateProductRequest from './dtos/requests/product/UpdateProductRequest'
+import InsertOrderRequest from './dtos/requests/order/InserOrderRequest'
+import InsertUserRequest from './dtos/requests/user/InsertUserRequest'
 const router = express.Router()
 export function AppRoute(app) {
+  // user
+  router.post('/users',
+    validate(InsertUserRequest),
+    asyncHandler(UserController.insertUser)
+  );
   // products
   router.get('/products', asyncHandler(ProductController.getProducts));
   router.get('/products/:id', asyncHandler(ProductController.getProductById));
@@ -39,7 +47,9 @@ export function AppRoute(app) {
   // order
   router.get('/orders', asyncHandler(OrderController.getOrders));
   router.get('/orders/:id', asyncHandler(OrderController.getOrderById));
-  router.post('/orders', asyncHandler(OrderController.insertOrder));
+  router.post('/orders', 
+    validate(InsertOrderRequest),
+    asyncHandler(OrderController.insertOrder));
   router.put('/orders/:id', asyncHandler(OrderController.updateOrder));
   router.delete('/orders/:id', asyncHandler(OrderController.deleteOrder));
 
