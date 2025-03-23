@@ -9,3 +9,27 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "shopapp_online"
     restart: always
+    networks:
+      - shopapp-online
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-container
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - 90:80
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_MILIT: 500M
+    networks:
+      - shopapp-online
+networks:
+  shopapp-online:
+    name: shopapp-online
+    driver: bridge
+# Chạy docker +  phpmyadmin
+# docker-compose -f ./deployments.yml up -d
+# docker-compose -f ./deployments.yml down
+  
