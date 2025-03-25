@@ -91,14 +91,43 @@ export async function insertNews(req, res) {
   }
 }
 
-export async function deleteNews(req, res) {
+export const deleteNews = async (req, res) => {
   const { id } = req.params;
-  const deleted = await db.News.destroy({ where: { id } });
-  if (!deleted) {
-    return res.status(404).json({ message: "Tin tức không tồn tại" });
+  const transaction = await db.sequelize.transaction(); // Start a transaction
+  //  Khi 2 bảng có mối quan hệ 1- n, cần xóa bản ghi trong bảng con trước
+  try {
+    // First, delete any associated news details
+    await db.NewsDetail.destroy({
+      where: { news_id: id },
+      transaction: transaction // Use the transaction
+    });
+
+    // Then, delete the news article itself
+    const deleted = await db.News.destroy({
+      where: { id },
+      transaction: transaction // Use the transaction
+    });
+
+    if (deleted) {
+      await transaction.commit(); // Commit the transaction if everything is fine
+      return res.status(200).json({
+        message: "Xóa bài báo thành công"
+      });
+    } else {
+      await transaction.rollback(); // Rollback if the news article wasn’t found
+      return res.status(404).json({
+        message: "Bài báo không tồn tại"
+      });
+    }
+  } catch (error) {
+    await transaction.rollback(); // Rollback if there's an error
+    return res.status(500).json({
+      message: "Lỗi khi xóa bài báo",
+      error: error.message
+    });
   }
-  res.status(200).json({ message: "Xóa tin tức thành công" });
-}
+};
+
 
 export async function updateNews(req, res) {
   const { id } = req.params;
