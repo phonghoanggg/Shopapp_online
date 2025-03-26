@@ -7,6 +7,8 @@ import * as OrderController from './controllers/OrderController'
 import * as OrderDetailController from './controllers/OrderDetailController'
 import * as NewsController from './controllers/NewController'
 import * as NewsDetailController from './controllers/NewDetailController'
+import * as BannerController from './controllers/BannerController'
+import * as BannerDetailController from './controllers/BannerDetailController'
 import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
 import InsertProductRequest from './dtos/requests/product/InsertProductRequest'
@@ -16,6 +18,8 @@ import InsertUserRequest from './dtos/requests/user/InsertUserRequest'
 import InsertNewsRequest from './dtos/requests/news/InsertNewsRequest'
 import InsertNewsDetailRequest from './dtos/requests/newDetail/InsertNewsDetailRequest'
 import UpdateNewsRequest from './dtos/requests/news/UpdateNewsRequest'
+import InsertBannerRequest from './dtos/requests/banner/InsertBannerRequest'
+import InsertBannerDetailRequest from './dtos/requests/bannerDetail/InsertBannerDetailRequest'
 
 const router = express.Router()
 export function AppRoute(app) {
@@ -85,3 +89,19 @@ export function AppRoute(app) {
     validate(UpdateNewsRequest),
     asyncHandler(NewsDetailController.updateNewsDetail));
   router.delete("/news-details/:id", asyncHandler(NewsDetailController.deleteNewsDetail));
+  // banner
+  router.get('/banners', asyncHandler(BannerController.getBanners));
+  router.get('/banners/:id', asyncHandler(BannerController.getBannerById));
+  router.post('/banners', 
+    validate(InsertBannerRequest),
+    asyncHandler(BannerController.insertBanner));
+  router.put('/banners/:id', asyncHandler(BannerController.updateBanner));
+  router.delete('/banners/:id', asyncHandler(BannerController.deleteBanner));
+  // banner detail
+  router.get('/banner-details', asyncHandler(BannerDetailController.getBannerDetails));
+  router.get('/banner-details/:id', asyncHandler(BannerDetailController.getBannerDetailById));
+  router.post('/banner-details',
+     validate(InsertBannerDetailRequest),
+     asyncHandler(BannerDetailController.insertBannerDetail));
+  router.put('/banner-details/:id', asyncHandler(BannerDetailController.updateBannerDetail));
+  router.delete('/banner-details/:id', asyncHandler(BannerDetailController.deleteBannerDetail));
