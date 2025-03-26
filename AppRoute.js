@@ -9,6 +9,8 @@ import * as NewsController from './controllers/NewController'
 import * as NewsDetailController from './controllers/NewDetailController'
 import * as BannerController from './controllers/BannerController'
 import * as BannerDetailController from './controllers/BannerDetailController'
+import * as uploadImages from './controllers/ImageController'
+
 import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
 import InsertProductRequest from './dtos/requests/product/InsertProductRequest'
@@ -20,7 +22,7 @@ import InsertNewsDetailRequest from './dtos/requests/newDetail/InsertNewsDetailR
 import UpdateNewsRequest from './dtos/requests/news/UpdateNewsRequest'
 import InsertBannerRequest from './dtos/requests/banner/InsertBannerRequest'
 import InsertBannerDetailRequest from './dtos/requests/bannerDetail/InsertBannerDetailRequest'
-
+import upload from './middlewares/imageUpload'
 const router = express.Router()
 export function AppRoute(app) {
   // user
@@ -105,3 +107,5 @@ export function AppRoute(app) {
      asyncHandler(BannerDetailController.insertBannerDetail));
   router.put('/banner-details/:id', asyncHandler(BannerDetailController.updateBannerDetail));
   router.delete('/banner-details/:id', asyncHandler(BannerDetailController.deleteBannerDetail));
+  // Upload file
+  router.post('/images/upload', upload.array('images', 5),asyncHandler(uploadImages.uploadImages))
