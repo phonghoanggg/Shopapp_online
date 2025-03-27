@@ -56,6 +56,7 @@ export async function insertProduct(req, res) {
     data: products
   })
 }
+
 export async function deleteProduct(req, res) {
   const { id } = req.params;
   const deleted = await db.Product.destroy({ where: { id } });
@@ -64,13 +65,22 @@ export async function deleteProduct(req, res) {
   }
   res.status(200).json({ message: 'Xóa sản phẩm thành công' });
 }
+
 export async function updateProduct(req, res) {
   const { id } = req.params;
+  const { name } = req.body;
   const [updated] = await db.Product.update(req.body, {
     where: { id }
   });
   if (!updated) {
     return res.status(404).json({ message: 'Sản phẩm không tồn tại' });
+  }
+  // Kiểm tra xem tên danh mục mới có bị trùng với danh mục khác không
+  const duplicateProduct = await db.Product.findOne({
+    where: { name, id: { [Op.ne]: id } } // Loại trừ chính danh mục đang cập nhật
+  });
+  if (duplicateProduct) {
+    return res.status(400).json({ message: 'Tên sản phẩm đã tồn tại, vui lòng chọn tên khác' });
   }
   const updatedProduct = await db.Product.findByPk(id);
   res.status(200).json({

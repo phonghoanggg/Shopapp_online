@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import db from "../models";
 import { Op } from "sequelize";
+import path from 'path';
+import fs from 'fs';
 
 export async function getBanners(req, res) {
   const { page = 1 } = req.query;
@@ -39,7 +41,7 @@ export async function getBannerById(req, res) {
 export async function insertBanner(req, res) {
   const duplicateBanner = await db.Banner.findOne({where : {name: req.body.name.trim()}});
   if (duplicateBanner) {
-    return res.status(409).json({ message: "Banner đã tồn tại" });
+    return res.status(409).json({ message: "Banner đã tồn tại, vui lòng chọn tên khác" });
   }
   const newBanner = await db.Banner.create(req.body);
   res.status(201).json({
@@ -53,6 +55,19 @@ export async function updateBanner(req, res) {
   const [updated] = await db.Banner.update(req.body, { where: { id } });
   if (!updated) {
     return res.status(404).json({ message: "Banner không tồn tại" });
+  }
+  // Kiểm tra xem có banner nào khác có cùng tên không (trừ sản phẩm hiện tại)
+  const bannerName = req.body.name.trim();
+  const existingProduct = await db.Banner.findOne({
+    where: {
+      name: bannerName,
+      id: { [Op.ne]: id } // Loại trừ sản phẩm hiện tại
+    }
+  });
+  if (existingProduct) {
+    return res.status(400).json({
+      message: 'Tên banner đã tồn tại, vui lòng chọn tên khác.'
+    });
   }
   const updatedBanner = await db.Banner.findByPk(id);
   res.status(200).json({

@@ -50,6 +50,7 @@ export async function insertBrand(req, res) {
     data: brand,
   });
 }
+
 export async function deleteBrand(req, res) {
   const { id } = req.params;
   const deleted = await db.Brand.destroy({ where: { id } });
@@ -58,15 +59,27 @@ export async function deleteBrand(req, res) {
   }
   res.status(200).json({ message: 'Xóa thương hiệu thành công' });
 }
+
 export async function updateBrand(req, res) {
   const { id } = req.params;
-  const [updated] = await db.Brand.update(req.body, { where: { id } });
-  if (!updated) {
+  const { name } = req.body;
+
+  const existingBrand = await db.Brand.findByPk(id);
+  if (!existingBrand) {
     return res.status(404).json({ message: 'Thương hiệu không tồn tại' });
   }
+  const duplicateBrand = await db.Brand.findOne({
+    where: { name, id: { [Op.ne]: id } } 
+  });
+
+  if (duplicateBrand) {
+    return res.status(400).json({ message: 'Tên thương hiệu đã tồn tại, vui lòng chọn tên khác' });
+  }
+
+  await db.Brand.update(req.body, { where: { id } });
   const updatedBrand = await db.Brand.findByPk(id);
   res.status(200).json({
     message: 'Cập nhật thương hiệu thành công',
     data: updatedBrand
-  })
+  });
 }

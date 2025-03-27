@@ -59,10 +59,25 @@ export async function deleteCategory(req, res) {
 }
 export async function updateCategory(req, res) {
   const { id } = req.params;
-  const [updated] = await db.Category.update(req.body, { where: { id } });
-  if (!updated) {
+  const { name } = req.body;
+
+  // Kiểm tra xem danh mục có tồn tại không
+  const existingCategory = await db.Category.findByPk(id);
+  if (!existingCategory) {
     return res.status(404).json({ message: 'Danh mục không tồn tại' });
   }
+
+  // Kiểm tra xem tên danh mục mới có bị trùng với danh mục khác không
+  const duplicateCategory = await db.Category.findOne({
+    where: { name, id: { [Op.ne]: id } } // Loại trừ chính danh mục đang cập nhật
+  });
+
+  if (duplicateCategory) {
+    return res.status(400).json({ message: 'Tên danh mục đã tồn tại, vui lòng chọn tên khác' });
+  }
+  // Cập nhật danh mục
+  await db.Category.update(req.body, { where: { id } });
+  // Lấy danh mục đã cập nhật
   const updatedCategory = await db.Category.findByPk(id);
   res.status(200).json({
     message: 'Cập nhật danh mục thành công',

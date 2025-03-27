@@ -128,16 +128,31 @@ export const deleteNews = async (req, res) => {
   }
 };
 
-
 export async function updateNews(req, res) {
   const { id } = req.params;
-  const [updated] = await db.News.update(req.body, { where: { id } });
-  if (!updated) {
-    return res.status(404).json({ message: "Tin tức không tồn tại" });
+  const { title } = req.body;
+
+  // Kiểm tra xem tin tức có tồn tại không
+  const existingNews = await db.News.findByPk(id);
+  if (!existingNews) {
+    return res.status(404).json({ message: 'Tin tức không tồn tại' });
   }
+
+  // Kiểm tra xem tiêu đề tin tức mới có bị trùng với tin khác không
+  const duplicateNews = await db.News.findOne({
+    where: { title, id: { [Op.ne]: id } }
+  });
+
+  if (duplicateNews) {
+    return res.status(400).json({ message: 'Tiêu đề tin tức đã tồn tại, vui lòng chọn tiêu đề khác' });
+  }
+
+  // Cập nhật tin tức
+  await db.News.update(req.body, { where: { id } });
+
   const updatedNews = await db.News.findByPk(id);
   res.status(200).json({
-    message: "Cập nhật tin tức thành công",
+    message: 'Cập nhật tin tức thành công',
     data: updatedNews
   });
 }

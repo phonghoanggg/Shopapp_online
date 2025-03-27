@@ -9,7 +9,7 @@ import * as NewsController from './controllers/NewController'
 import * as NewsDetailController from './controllers/NewDetailController'
 import * as BannerController from './controllers/BannerController'
 import * as BannerDetailController from './controllers/BannerDetailController'
-import * as uploadImages from './controllers/ImageController'
+import * as ImagesController from './controllers/ImageController'
 
 import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
@@ -22,7 +22,9 @@ import InsertNewsDetailRequest from './dtos/requests/newDetail/InsertNewsDetailR
 import UpdateNewsRequest from './dtos/requests/news/UpdateNewsRequest'
 import InsertBannerRequest from './dtos/requests/banner/InsertBannerRequest'
 import InsertBannerDetailRequest from './dtos/requests/bannerDetail/InsertBannerDetailRequest'
+import validateImageExitsts from './middlewares/validateImageExitsts'
 import upload from './middlewares/imageUpload'
+
 const router = express.Router()
 export function AppRoute(app) {
   // user
@@ -35,25 +37,27 @@ export function AppRoute(app) {
   router.get('/products/:id', asyncHandler(ProductController.getProductById));
   router.post('/products',
     validate(InsertProductRequest),
+    validateImageExitsts,
     asyncHandler(ProductController.insertProduct)
   );
   router.put('/products/:id',
     validate(UpdateProductRequest),
+    validateImageExitsts,
     asyncHandler(ProductController.updateProduct));
   router.delete('/products/:id', asyncHandler(ProductController.deleteProduct));
 
   // category
   router.get('/categories', asyncHandler(CategoryController.getCategories));
   router.get('/categories/:id', asyncHandler(CategoryController.getCategoryById));
-  router.post('/categories', asyncHandler(CategoryController.insertCategory));
-  router.put('/categories/:id', asyncHandler(CategoryController.updateCategory));
+  router.post('/categories',validateImageExitsts, asyncHandler(CategoryController.insertCategory));
+  router.put('/categories/:id', validateImageExitsts, asyncHandler(CategoryController.updateCategory));
   router.delete('/categories/:id', asyncHandler(CategoryController.deleteCategory));
 
   // brand
   router.get('/brands', asyncHandler(BrandController.getBrands));
   router.get('/brands/:id', asyncHandler(BrandController.getBrandById));
-  router.post('/brands', asyncHandler(BrandController.insertBrand));
-  router.put('/brands/:id', asyncHandler(BrandController.updateBrand));
+  router.post('/brands',validateImageExitsts, asyncHandler(BrandController.insertBrand));
+  router.put('/brands/:id', validateImageExitsts, asyncHandler(BrandController.updateBrand));
   router.delete('/brands/:id', asyncHandler(BrandController.deleteBrand));
 
   // order
@@ -76,8 +80,9 @@ export function AppRoute(app) {
   router.get('/news/:id', asyncHandler(NewsController.getNewsById));
   router.post('/news',
     validate(InsertNewsRequest),
+    validateImageExitsts,
     asyncHandler(NewsController.insertNews));
-  router.put('/news/:id', asyncHandler(NewsController.updateNews));
+  router.put('/news/:id', validateImageExitsts, asyncHandler(NewsController.updateNews));
   router.delete('/news/:id', asyncHandler(NewsController.deleteNews));
   app.use(router)
 }
@@ -96,8 +101,11 @@ export function AppRoute(app) {
   router.get('/banners/:id', asyncHandler(BannerController.getBannerById));
   router.post('/banners', 
     validate(InsertBannerRequest),
+    validateImageExitsts,
     asyncHandler(BannerController.insertBanner));
-  router.put('/banners/:id', asyncHandler(BannerController.updateBanner));
+  router.put('/banners/:id', 
+    validateImageExitsts,
+    asyncHandler(BannerController.updateBanner));
   router.delete('/banners/:id', asyncHandler(BannerController.deleteBanner));
   // banner detail
   router.get('/banner-details', asyncHandler(BannerDetailController.getBannerDetails));
@@ -108,4 +116,5 @@ export function AppRoute(app) {
   router.put('/banner-details/:id', asyncHandler(BannerDetailController.updateBannerDetail));
   router.delete('/banner-details/:id', asyncHandler(BannerDetailController.deleteBannerDetail));
   // Upload file
-  router.post('/images/upload', upload.array('images', 5),asyncHandler(uploadImages.uploadImages))
+  router.post('/images/upload', upload.array('images', 5),asyncHandler(ImagesController.uploadImages))
+  router.get('/images/:fileName', asyncHandler(ImagesController.viewImage));

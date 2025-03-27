@@ -2,9 +2,9 @@ import Joi from 'joi';
 
 class UpdateNewsRequest {
   constructor(data) {
-    this.title = data.title ?? null;
-    this.image = data.image ?? null;
-    this.content = data.content ?? null;
+    this.title = data.title;
+    this.image = data.image;
+    this.content = data.content;
   }
 
   // Validate dữ liệu đầu vào
