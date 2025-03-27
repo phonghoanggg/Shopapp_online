@@ -66,14 +66,15 @@ export async function updateCategory(req, res) {
   if (!existingCategory) {
     return res.status(404).json({ message: 'Danh mục không tồn tại' });
   }
-
-  // Kiểm tra xem tên danh mục mới có bị trùng với danh mục khác không
-  const duplicateCategory = await db.Category.findOne({
-    where: { name, id: { [Op.ne]: id } } // Loại trừ chính danh mục đang cập nhật
-  });
-
-  if (duplicateCategory) {
-    return res.status(400).json({ message: 'Tên danh mục đã tồn tại, vui lòng chọn tên khác' });
+  if(name) {
+    // Kiểm tra xem tên danh mục mới có bị trùng với danh mục khác không
+    const duplicateCategory = await db.Category.findOne({
+      where: { name, id: { [Op.ne]: id } } // Loại trừ chính danh mục đang cập nhật
+    });
+  
+    if (duplicateCategory) {
+      return res.status(400).json({ message: 'Tên danh mục đã tồn tại, vui lòng chọn tên khác' });
+    }
   }
   // Cập nhật danh mục
   await db.Category.update(req.body, { where: { id } });

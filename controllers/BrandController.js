@@ -68,12 +68,13 @@ export async function updateBrand(req, res) {
   if (!existingBrand) {
     return res.status(404).json({ message: 'Thương hiệu không tồn tại' });
   }
-  const duplicateBrand = await db.Brand.findOne({
-    where: { name, id: { [Op.ne]: id } } 
-  });
-
-  if (duplicateBrand) {
-    return res.status(400).json({ message: 'Tên thương hiệu đã tồn tại, vui lòng chọn tên khác' });
+  if(name) {
+    const duplicateBrand = await db.Brand.findOne({
+      where: { name, id: { [Op.ne]: id } } 
+    });
+    if (duplicateBrand) {
+      return res.status(400).json({ message: 'Tên thương hiệu đã tồn tại, vui lòng chọn tên khác' });
+    }
   }
 
   await db.Brand.update(req.body, { where: { id } });

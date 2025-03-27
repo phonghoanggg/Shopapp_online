@@ -50,11 +50,19 @@ export async function getProductById(req,res) {
   })
 }
 export async function insertProduct(req, res) {
-  const products = await db.Product.create(req.body)
+  const { name } = req.body;
+  const existingProduct = await db.Product.findOne({ where: { name } });
+
+  if (existingProduct) {
+    return res.status(400).json({ message: "Tên sản phẩm đã tồn tại, vui lòng chọn tên khác" });
+  }
+  // Thêm sản phẩm mới
+  const product = await db.Product.create(req.body);
+
   res.status(201).json({
-    message: 'Thêm mới sản phẩm thành công',
-    data: products
-  })
+    message: "Thêm mới sản phẩm thành công",
+    data: product
+  });
 }
 
 export async function deleteProduct(req, res) {
@@ -76,11 +84,13 @@ export async function updateProduct(req, res) {
     return res.status(404).json({ message: 'Sản phẩm không tồn tại' });
   }
   // Kiểm tra xem tên danh mục mới có bị trùng với danh mục khác không
-  const duplicateProduct = await db.Product.findOne({
-    where: { name, id: { [Op.ne]: id } } // Loại trừ chính danh mục đang cập nhật
-  });
-  if (duplicateProduct) {
-    return res.status(400).json({ message: 'Tên sản phẩm đã tồn tại, vui lòng chọn tên khác' });
+  if(name) {
+    const duplicateProduct = await db.Product.findOne({
+      where: { name, id: { [Op.ne]: id } } // Loại trừ chính danh mục đang cập nhật
+    });
+    if (duplicateProduct) {
+      return res.status(400).json({ message: 'Tên sản phẩm đã tồn tại, vui lòng chọn tên khác' });
+    }
   }
   const updatedProduct = await db.Product.findByPk(id);
   res.status(200).json({
