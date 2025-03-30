@@ -10,7 +10,9 @@ import * as NewsDetailController from './controllers/NewDetailController'
 import * as BannerController from './controllers/BannerController'
 import * as BannerDetailController from './controllers/BannerDetailController'
 import * as ImagesController from './controllers/ImageController'
+import * as ProductImagesController from './controllers/ProductImagesController'
 
+// validate dto
 import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
 import InsertProductRequest from './dtos/requests/product/InsertProductRequest'
@@ -23,6 +25,7 @@ import UpdateNewsRequest from './dtos/requests/news/UpdateNewsRequest'
 import InsertBannerRequest from './dtos/requests/banner/InsertBannerRequest'
 import InsertBannerDetailRequest from './dtos/requests/bannerDetail/InsertBannerDetailRequest'
 import validateImageExitsts from './middlewares/validateImageExitsts'
+import InsertProductImagesRequest from './dtos/requests/product_images/InsertProductImagesRequest'
 import upload from './middlewares/imageUpload'
 
 const router = express.Router()
@@ -118,3 +121,15 @@ export function AppRoute(app) {
   // Upload file
   router.post('/images/upload', upload.array('images', 5),asyncHandler(ImagesController.uploadImages))
   router.get('/images/:fileName', asyncHandler(ImagesController.viewImage));
+  router.get('/images/:id', asyncHandler(ImagesController.deleteImages));
+
+  // product images
+  router.get("/product-images", asyncHandler(ProductImagesController.getProductImages));
+  router.get("/product-images/:id", asyncHandler(ProductImagesController.getProductImageById));
+  router.post("/product-images",
+    validate(InsertProductImagesRequest),
+    asyncHandler(ProductImagesController.insertProductImage));
+  router.delete("/product-images/:id", asyncHandler(ProductImagesController.deleteProductImage));
+  
+  export default router;
+  
