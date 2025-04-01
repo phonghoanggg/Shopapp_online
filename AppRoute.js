@@ -11,6 +11,8 @@ import * as BannerController from './controllers/BannerController'
 import * as BannerDetailController from './controllers/BannerDetailController'
 import * as ImagesController from './controllers/ImageController'
 import * as ProductImagesController from './controllers/ProductImagesController'
+import * as CartController from './controllers/CartController'
+import * as CartItemController from './controllers/CartItemController'
 
 // validate dto
 import asyncHandler from './middlewares/asyncHandler'
@@ -26,6 +28,8 @@ import InsertBannerRequest from './dtos/requests/banner/InsertBannerRequest'
 import InsertBannerDetailRequest from './dtos/requests/bannerDetail/InsertBannerDetailRequest'
 import validateImageExitsts from './middlewares/validateImageExitsts'
 import InsertProductImagesRequest from './dtos/requests/product_images/InsertProductImagesRequest'
+import InsertCartRequest from './dtos/requests/cart/InsertCartRequest'
+import InsertCartItemRequest from './dtos/requests/cartItem/InsertCartItemRequest'
 import upload from './middlewares/imageUpload'
 
 const router = express.Router()
@@ -78,6 +82,27 @@ export function AppRoute(app) {
   router.post('/order-details', asyncHandler(OrderDetailController.insertOrderDetail));
   router.put('/order-details/:id', asyncHandler(OrderDetailController.updateOrderDetail));
   router.delete('/order-details/:id', asyncHandler(OrderDetailController.deleteOrderDetail));
+
+  // Cart routes
+  router.get('/carts', asyncHandler(CartController.getCarts));
+  router.get('/carts/:id', asyncHandler(CartController.getCartById));
+  router.post('/carts',
+    validate(InsertCartRequest),
+    asyncHandler(CartController.insertCart));
+  router.post('/carts/checkout', asyncHandler(CartController.checkoutCart));
+  router.delete('/carts/:id', asyncHandler(CartController.deleteCart));
+
+
+  // CartItem routes
+  router.get('/cart-items', asyncHandler(CartItemController.getCartItems));
+  router.get('/cart-items/:id', asyncHandler(CartItemController.getCartItemsByCartId));
+  router.get('/cart-items/carts/:cart_id', asyncHandler(CartItemController.getCartItemsByCartId));
+  router.post('/cart-items',
+    validate(InsertCartItemRequest),
+    asyncHandler(CartItemController.insertCartItem));
+  router.put('/cart-items/:id', asyncHandler(CartItemController.updateCartItem));
+  router.delete('/cart-items/:id', asyncHandler(CartItemController.deleteCartItem));
+
   // news
   router.get('/news', asyncHandler(NewsController.getNews));
   router.get('/news/:id', asyncHandler(NewsController.getNewsById));

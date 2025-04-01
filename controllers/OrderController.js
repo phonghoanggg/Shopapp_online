@@ -8,9 +8,27 @@ export async function getOrders(req, res) {
   });
 }
 
-export function getOrderById(req, res) {
+export async function getOrderById(req, res) {
+  const { id } = req.params; // Lấy ID từ URL
+  // Tìm đơn hàng theo ID, bao gồm cả chi tiết đơn hàng
+  const order = await db.Order.findByPk(id, {
+    include: {
+      model: db.OrderDetail,
+      as: "order_details", // Alias phải đúng như trong model
+    },
+  });
+
+  // Nếu không tìm thấy đơn hàng
+  if (!order) {
+    return res.status(404).json({
+      message: "Đơn hàng không tìm thấy",
+    });
+  }
+
+  // Trả về dữ liệu đơn hàng
   res.status(200).json({
-    message: 'Lấy thông tin đơn hàng thành công'
+    message: "Lấy thông tin đơn hàng thành công",
+    data: order,
   });
 }
 

@@ -8,7 +8,7 @@ Các câu lệnh sequelize
 npx sequelize-cli db:migrate
 npx sequelize-cli db:migrate:undo
 npx sequelize-cli db:migrate:undo:all
-npx sequelize-cli model:generate --name bannerDetail --attributes product_id:integer,banner_id:integer
+npx sequelize-cli model:generate --name CartItem --attributes cart_id:integer,product_id:integer,quantity:integer;
 
 Kiểm tra khóa ngoại của 1 bảng
 ALTER TABLE products 
