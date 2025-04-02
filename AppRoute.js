@@ -36,9 +36,13 @@ import upload from './middlewares/imageUpload'
 const router = express.Router()
 export function AppRoute(app) {
   // user
-  router.post('/users',
+  router.post('/users/register',
     validate(InsertUserRequest),
-    asyncHandler(UserController.insertUser)
+    asyncHandler(UserController.registerUser)
+  );
+  router.post('/users/login',
+    validate(InsertUserRequest),
+    asyncHandler(UserController.loginUser)
   );
   // products
   router.get('/products', asyncHandler(ProductController.getProducts));
