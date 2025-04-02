@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes, Op } from "sequelize";
 import db from '../models';
+import { OrderStatus } from "../constants";
 
 export async function getCarts(req, res) {
   const { session_id, user_id, page = 1 } = req.query;
@@ -76,6 +77,7 @@ export const insertCart = async (req, res) => {
   });
 
 };
+
 export const checkoutCart = async (req, res) => {
   const { cart_id, total, note } = req.body;
   // Kiểm tra xem cart_id có tồn tại và không rỗng
@@ -104,6 +106,7 @@ export const checkoutCart = async (req, res) => {
       {
         session_id: cart.session_id,
         user_id: cart.user_id,
+        status: OrderStatus.PENDING,
         total: total || cart.cart_items.reduce((acc,item) => acc + item.quantity * item.product_list.price, 0),
         note: note || ""
       },

@@ -1,8 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../models";
 import { Op } from "sequelize";
-import path from 'path';
-import fs from 'fs';
+import { BannerStatus } from "../constants";
 
 export async function getBanners(req, res) {
   const { page = 1 } = req.query;
@@ -43,7 +42,11 @@ export async function insertBanner(req, res) {
   if (duplicateBanner) {
     return res.status(409).json({ message: "Banner đã tồn tại, vui lòng chọn tên khác" });
   }
-  const newBanner = await db.Banner.create(req.body);
+  const bannerData = {
+    ...req.body,
+    status: BannerStatus.ACTIVE
+  }
+  const newBanner = await db.Banner.create(bannerData);
   res.status(201).json({
     message: "Thêm mới banner thành công",
     data: newBanner

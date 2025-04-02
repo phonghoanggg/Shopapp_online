@@ -30,6 +30,7 @@ import validateImageExitsts from './middlewares/validateImageExitsts'
 import InsertProductImagesRequest from './dtos/requests/product_images/InsertProductImagesRequest'
 import InsertCartRequest from './dtos/requests/cart/InsertCartRequest'
 import InsertCartItemRequest from './dtos/requests/cartItem/InsertCartItemRequest'
+import UpdateOrderRequest from './dtos/requests/order/UpdateOrderRequest'
 import upload from './middlewares/imageUpload'
 
 const router = express.Router()
@@ -70,10 +71,12 @@ export function AppRoute(app) {
   // order
   router.get('/orders', asyncHandler(OrderController.getOrders));
   router.get('/orders/:id', asyncHandler(OrderController.getOrderById));
-  router.post('/orders', 
-    validate(InsertOrderRequest),
-    asyncHandler(OrderController.insertOrder));
-  router.put('/orders/:id', asyncHandler(OrderController.updateOrder));
+  // router.post('/orders', 
+  //   validate(InsertOrderRequest),
+  //   asyncHandler(OrderController.insertOrder));
+  router.put('/orders/:id',
+    validate(UpdateOrderRequest),
+    asyncHandler(OrderController.updateOrder));
   router.delete('/orders/:id', asyncHandler(OrderController.deleteOrder));
 
   // order detail
