@@ -57,6 +57,7 @@ export async function deleteCategory(req, res) {
   }
   res.status(200).json({ message: 'Xóa danh mục thành công' });
 }
+
 export async function updateCategory(req, res) {
   const { id } = req.params;
   const { name } = req.body;
